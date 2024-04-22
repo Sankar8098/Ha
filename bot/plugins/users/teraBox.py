@@ -3,7 +3,7 @@ import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from bot.logging import LOGGER
-from bot.helpers.terabox import teraBoxFile
+from bot.helpers.terabox import teraBoxFile, teraBoxDl
 
 
 @Client.on_message(filters.command(["terabox", "tera", "dl"]))
@@ -18,7 +18,7 @@ async def teraBoxDl(_, message: Message):
 
     try:
         file = await teraBoxFile(url)
-        await message.reply_document(document=file)
+        await message.reply(file[0])
         # os.remove(file)
         LOGGER(__name__).info(f"Downloaded file from {url}")
     except Exception as e:
