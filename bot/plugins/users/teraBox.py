@@ -18,9 +18,10 @@ async def teraBoxDl(_, message: Message):
 
     try:
         file = await teraBoxFile(url)
-        await message.reply_document(document=file, quote=True) and os.remove(file)
+        await message.reply_document(document=file)
+        # os.remove(file)
         LOGGER(__name__).info(f"Downloaded file from {url}")
     except Exception as e:
-        LOGGER(__name__).error(f"Failed to download file from {url}\n{str(e)}")
-        await message.reply_text(f"Failed to download file from {url}\n'Error: '{str(e)}")
+        LOGGER(__name__).error(f"Failed to upload file from {url}\n{str(e)}")
+        await message.reply_text(f"Failed to upload file from {url}\n'Error: '{str(e)}")
 

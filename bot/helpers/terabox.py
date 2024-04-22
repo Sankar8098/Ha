@@ -39,7 +39,7 @@ async def teraBoxFile(url: str) -> str:
         with AsyncClient() as client:
             r = await client.get(resp[0])
             r.raise_for_status()
-            async with open(f'{resp[1]}', 'w') as f:
+            async with open(f'downloads/{resp[1]}', 'wb') as f:
                 await f.write(r.content)
                 await f.close()
                 return os.path.abspath(f.name)
