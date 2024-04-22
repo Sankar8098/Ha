@@ -1,0 +1,15 @@
+pyrogram~=2.0.106
+langdetect
+brotli
+TgCrypto
+python-dotenv~=1.0.0
+speedtest-cli
+pyrate_limiter 
+cachetools~=5.3.2
+aiofiles~=23.2.1
+psutil~=5.9.7
+httpx~=0.26.0
+motor~=3.3.2
+bs4~=0.0.1
+uvloop~=0.19.0
+selenium
