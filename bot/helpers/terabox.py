@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from aiofiles import open
 from httpx import AsyncClient
+from bot import logging
 
 
 async def teraBoxDl(url: str) -> List:
@@ -19,9 +20,11 @@ async def teraBoxDl(url: str) -> List:
         browser.get(baseurl)
         WebDriverWait(browser, 5).until(ec.presence_of_element_located((By.CSS_SELECTOR, 'div.p-5')))
         elements = browser.find_elements(By.CSS_SELECTOR, 'div.p-5 > a')
+        filename = browser.find_element(By.CSS_SELECTOR, 'div.p-5 > a > h5').text
         links = [link.get_attribute('href') for link in elements]
-        return [links[2], ]
+        return [links[2], filename]
     except Exception as e:
+        logging.LOGGER(str(e))
         print(e)
         print("I give up...")
     finally:
@@ -29,11 +32,18 @@ async def teraBoxDl(url: str) -> List:
 
 
 async def teraBoxFile(url: str) -> str:
-    with AsyncClient() as client:
-        r = await client.get(url)
-        r.raise_for_status()
-        if r.status_code == 200:
-            async with open('', 'w') as f:
-                await f.write(r.text)
-            return soup.find('a', {'class': 'btn btn-primary btn-lg'}).get('href')
-    pass
+    resp = await teraBoxDl(url)
+    try: os.mkdir('downloads')
+    except: pass
+    try:
+        with AsyncClient() as client:
+            r = await client.get(resp[0])
+            r.raise_for_status()
+            async with open(f'{resp[1]}', 'w') as f:
+                await f.write(r.content)
+                await f.close()
+                return os.path.abspath('' + resp[1])
+    except Exception as e:
+        logging.LOGGER(str(e))
+        print(e)
+        return str(e)
