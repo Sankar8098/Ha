@@ -42,7 +42,7 @@ async def teraBoxFile(url: str) -> str:
             async with open(f'{resp[1]}', 'w') as f:
                 await f.write(r.content)
                 await f.close()
-                return os.path.abspath('' + resp[1])
+                return os.path.abspath(f.name)
     except Exception as e:
         logging.LOGGER(str(e))
         print(e)
